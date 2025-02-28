@@ -1,6 +1,16 @@
 
 let humanScore = 0;
-let comptuerScore = 0;
+let computerScore = 0;
+
+
+const buttons = document.querySelectorAll("button");
+
+const results = document.querySelector(".results");
+
+const userScore = document.querySelector(".user-score");
+const compScore = document.querySelector(".computer-score");
+
+
 
 
 function getComputerChoice(){
@@ -21,21 +31,10 @@ function getComputerChoice(){
     
 }
 
-function getHumanChoice(){
+function getHumanChoice(buttonClass){
 
-    let userChoice;
-
-    while(true)
-    {
-        userChoice = prompt("Enter Rock, Paper, or Scissors!");
-
-        userChoice.toLowerCase();
-        if(userChoice === "rock" || userChoice === "paper" || userChoice === "scissors")
-        {
-            break;
-        }
-
-    }
+    let userChoice = buttonClass;
+    userChoice = userChoice.slice(0, -7);
     return userChoice;
     
 }
@@ -47,53 +46,90 @@ function playRound(userChoice, computerChoice)
 
     if(computerChoice == userChoice)
     {
-        console.log (userChoice + " and " + computerChoice +" is a tie!")
+        results.textContent = (userChoice + " and " + computerChoice +" is a tie!");
+        //console.log (userChoice + " and " + computerChoice +" is a tie!")
         return;
     }
 
     if(userChoice == "paper"){
         if(computerChoice == "scissors"){
-            console.log(computerChoice + " beats " + userChoice + "! You Lose.");
-            comptuerScore++;
+            results.textContent = (computerChoice + " beats " + userChoice + "! You Lose.");
+            //console.log(computerChoice + " beats " + userChoice + "! You Lose.");
+            computerScore++;
         }
         else{
-            console.log(userChoice + " beats " +  computerChoice + "! You Win!");
+            results.textContent = (userChoice + " beats " +  computerChoice + "! You Win!");
+            //console.log(userChoice + " beats " +  computerChoice + "! You Win!");
             humanScore++;
         }
     }
 
     if(userChoice == "scissors"){
         if(computerChoice == "rock"){
-            console.log(computerChoice + " beats " + userChoice + "! You Lose.");
-            comptuerScore++;
+            results.textContent = (computerChoice + " beats " + userChoice + "! You Lose.");
+            //console.log(computerChoice + " beats " + userChoice + "! You Lose.");
+            computerScore++;
         }
         else{
-            console.log(userChoice + " beats " +  computerChoice + "! You Win!");
+            results.textContent = (userChoice + " beats " +  computerChoice + "! You Win!");
+            //console.log(userChoice + " beats " +  computerChoice + "! You Win!");
             humanScore++;
         }
     }
 
     if(userChoice == "rock"){
         if(computerChoice == "paper"){
-            console.log(computerChoice + " beats " + userChoice + "! You Lose.");
-            comptuerScore++;
+            results.textContent = (computerChoice + " beats " + userChoice + "! You Lose.");
+            //console.log(computerChoice + " beats " + userChoice + "! You Lose.");
+            computerScore++;
         }
         else{
-            console.log(userChoice + " beats " +  computerChoice + "! You Win!");
+            results.textContent = (userChoice + " beats " +  computerChoice + "! You Win!");
+            //console.log(userChoice + " beats " +  computerChoice + "! You Win!");
             humanScore++;
         }
     }
 
+    userScore.textContent = ("Player Score: "+ humanScore);
+    compScore.textContent = ("Computer Score: "+ computerScore);
+
+    if(humanScore == 5)
+    {
+        let winnerDiv = document.createElement("div");
+        winnerDiv.textContent = "You Win!";
+        winnerDiv.setAttribute("style", "color: pink; font-size: 36px")
+        results.appendChild(winnerDiv);
+    }
+
+    if(computerScore == 5)
+        {
+            let winnerDiv = document.createElement("div");
+            winnerDiv.textContent = "Computer Wins!";
+            winnerDiv.setAttribute("style", "color: pink; font-size: 36px")
+            results.appendChild(winnerDiv);
+        }
+    
 }
+
+
 function playGame(){
     for(let i=0; i < 5; i++){
         playRound(getHumanChoice(), getComputerChoice());
     }
 
-    console.log("Player Score: "+humanScore);
-    console.log("Computer Score: "+comptuerScore);
+    userScore.textContent = ("Player Score: "+humanScore);
+    //console.log("Player Score: "+humanScore);
+    compScore.textContent = ("Computer Score: "+computerScore);
+    //console.log("Computer Score: "+computerScore);
 }
 
+// playGame();
 
-playGame();
-
+buttons.forEach((button) => {
+    // and for each one we add a 'click' listener
+    button.addEventListener("click", () => {
+      
+      playRound(getHumanChoice(button.className), getComputerChoice());
+  
+    });
+  });
